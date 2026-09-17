@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nakheel Intelligence — demo</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div id="intro" class="overlay">
+  <div class="card">
+    <p class="eyebrow">Sharjah · Mleiha · c. 500 BCE</p>
+    <h1>The falaj made dates predictable.<br>Nakheel Intelligence makes them forecastable.</h1>
+    <p>Twenty‑five centuries ago, underground falaj channels at Mleiha turned scarce water into reliable date harvests and a trade hub. Today the UAE has 40 million palms and no per‑palm view of yield, revenue or water. This is the digital falaj: a live satellite scan of any farm → palms counted → tonnes and dirhams forecast → water stress mapped.</p>
+    <button id="start">Open the map</button>
+  </div>
+</div>
+
+<div id="app">
+  <aside id="panel">
+    <header>
+      <h2>Nakheel <span>Intelligence</span></h2>
+      <p class="sub">Per‑palm digital twin · UAE</p>
+    </header>
+
+    <section>
+      <label>1 · Location</label>
+      <div class="presets">
+        <button data-loc="liwa">Liwa, Al Dhafra</button>
+        <button data-loc="dhaid">Al Dhaid, Sharjah</button>
+        <button data-loc="alfoah">Al Foah, Al Ain</button>
+      </div>
+      <p class="hint">…or drag the map to any farm. The scan covers the dashed box.</p>
+    </section>
+
+    <section>
+      <label>2 · Scan</label>
+      <button id="scan" class="primary">Scan area</button>
+      <div id="progress"><div></div></div>
+      <p id="status" class="hint">Fetches ~0.5 m imagery tiles and runs the palm detector in your browser.</p>
+    </section>
+
+    <section id="results" hidden>
+      <label>3 · Result</label>
+      <div class="kpis">
+        <div><b id="k-palms">–</b><span>palms detected</span></div>
+        <div><b id="k-ha">–</b><span>ha scanned</span></div>
+        <div><b id="k-density">–</b><span>palms / ha</span></div>
+        <div><b id="k-stress">–</b><span>water‑stress index</span></div>
+      </div>
+      <div class="row">
+        <label for="variety">Variety</label>
+        <select id="variety">
+          <option value="khalas">Khalas</option>
+          <option value="lulu">Lulu</option>
+          <option value="fard">Fard</option>
+          <option value="barhi">Barhi</option>
+          <option value="mixed" selected>Mixed / unknown</option>
+        </select>
+      </div>
+      <div class="row">
+        <label for="productive">Productive female share <span id="productive-v">80%</span></label>
+        <input type="range" id="productive" min="40" max="95" value="80">
+      </div>
+      <table class="forecast">
+        <tr><th></th><th>Low</th><th>Base</th><th>High</th></tr>
+        <tr><td>Harvest (t)</td><td id="t-lo">–</td><td id="t-base">–</td><td id="t-hi">–</td></tr>
+        <tr><td>Revenue (AED)</td><td id="r-lo">–</td><td id="r-base">–</td><td id="r-hi">–</td></tr>
+      </table>
+      <p class="hint" id="assumptions"></p>
+      <label class="toggle"><input type="checkbox" id="stress-toggle"> Show Sentinel‑2 water‑stress layer</label>
+      <p class="hint">Green = well‑watered canopy, red = stressed (NDMI, summer 2025). Available for Liwa and Al Dhaid.</p>
+    </section>
+
+    <footer>
+      <p>Imagery © Esri World Imagery · Sentinel‑2 © Copernicus. Detector: dark‑crown blob detection, red = high confidence, yellow = low (demo; production uses a trained model). Forecast is a range from count × farmer‑confirmed assumptions, not a measurement.</p>
+    </footer>
+  </aside>
+  <div id="map"></div>
+  <div id="legend" hidden>
+    <span class="sw stressed"></span> stressed <span class="sw ok"></span> normal <span class="sw lush"></span> well‑watered
+  </div>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
